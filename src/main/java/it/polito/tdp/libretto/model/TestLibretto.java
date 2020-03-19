@@ -14,28 +14,29 @@ public class TestLibretto {
 
 		lib.add(v1);
 		lib.add(v2);
-		lib.add(new Voto("Economia", 24, LocalDate.of(2020, 02, 14)));
+		if(lib.add(new Voto("Economia", 24, LocalDate.of(2020, 02, 14)))==false);
+			System.out.println("Errore nell'inserimento di Economia");
 		
 		System.out.println(this.lib) ; // stampaggio del libretto
 		
 		System.out.println(this.lib.stampaVotiUguali(28)) ;
 		
 		System.out.println(this.lib.estraiVotiUguali(28)) ;
+		String nomeCorso="Analisi II";
+		Voto votoAnalisi=lib.cercaVoto(nomeCorso);
+		System.out.println("Il voto di Analisi "+nomeCorso+" è "+votoAnalisi.getVoto());
+		Voto votoMancante= lib.cercaVoto("Fisica II");
+		System.out.println("Il voto di Fisica II è "+votoMancante);
 		
-		System.out.println(this.lib.cercaVoto("Analisi II"));
-		System.out.println(this.lib.cercaVoto("Analisi III"));
-		Voto v3=new Voto("Economia",25,LocalDate.of(2020,02, 14));
-		lib.add(v3);
-		if(this.lib.cercaVoto(v3)==true) {
-			System.out.println("Voto presente nel libretto \n");
-		}else {
-			System.out.println("Voto presente nel libretto \n");
-		}
-		if(this.lib.cercaConflitto(v3)==true) {
-			System.out.println("ATTENZIONE, siamo in presenza di un conflitto \n ");
-		}else {
-			System.out.println("Non ci sono conflitti \n");
-		}
+		
+		Voto v3=new Voto("Economia",24,LocalDate.now());
+		Voto v4=new Voto("Economia",25, LocalDate.now());
+		System.out.println("Economia con 24 e' duplicato:"+lib.cercaVoto(v3)+" / conflitto: "+lib.cercaConflitto(v3) );
+		System.out.println("Economia con 25 e' duplicato:"+lib.cercaVoto(v4)+" / conflitto: "+lib.cercaConflitto(v4) );
+		
+		
+		
+		
 		System.out.println(this.lib) ;
 		System.out.println(this.lib.LibrettoInOrdineAlfabetico());
 		System.out.println(this.lib.LibrettoInOrdineDiVotoDecrescente());

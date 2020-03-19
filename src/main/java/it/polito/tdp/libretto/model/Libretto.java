@@ -25,9 +25,12 @@ public class Libretto {
 	 * 
 	 * @param v Voto da aggiungere
 	 */
-	public void add(Voto v) {
-		if(this.cercaConflitto(v)==false && this.cercaVoto(v)==false)
+	public boolean add(Voto v) {
+		if(this.cercaConflitto(v)==false && this.cercaVoto(v)==false) {
 			this.voti.add(v);
+			return true;
+		}else
+			return false;
 	}
 	
 	/**
@@ -71,20 +74,33 @@ public class Libretto {
 		return s;
 	}
 	//punto tre Ricerca nel Libretto il voto di un esame dato il nome del corso
-	public int cercaVoto(String nomeCorso) {
-		boolean trovato=false;
-		Voto ve=null;
+	// se non ho il corso con il nome return null
+	/** 
+	 * 
+	 * @param nomeCorso
+	 * @return il {@link Voto}
+	 */
+	/*public Voto cercaVoto(String nomeCorso) {
 		for(Voto v: this.voti) {
 			if(v.getCorso().compareTo(nomeCorso)==0) {
-				trovato=true;
-				ve=v;
+				return v;
 			}
 		}
-		if(trovato==true)
-			return ve.getVoto();
-		return 0;
+		return null;
+	}*/
+	
+	public Voto cercaVoto(String nomeCorso) {
+		//Sto usando indexOf, mi sono creata un voto provvisorio. 
+		//indexOf mi andrà a cercare dentro il libretto quel Voto che soddisfa il metodo equals--> è stato dichiarato su nomeCorso
+		// per questo risultano i campi voto e data come 0 e null, tanto non li considero
+		int pos=this.voti.indexOf(new Voto(nomeCorso,0,null));
+		if(pos!=-1)
+			return this.voti.get(pos);
+		else
+			return null;
 	}
-	public boolean cercaVoto(Voto voto) {
+	
+	/*public boolean cercaVoto(Voto voto) {
 		boolean trovato=false;
 		for(Voto v: this.voti){
 			if(v.getCorso().compareTo(voto.getCorso())==0 && (v.getVoto()==voto.getVoto()))
@@ -94,8 +110,21 @@ public class Libretto {
 			return true;
 		else
 			return false;
+	}*/
+	public boolean cercaVoto(Voto voto) {
+		Voto esiste =this.cercaVoto(voto.getCorso());
+		if(esiste==null)
+			return false;
+		
+		/*if(esiste.getVoto()==voto.getVoto())
+			return true;
+		else 
+			false;*/
+		return (esiste.getVoto()==voto.getVoto());
+		
 	}
-	public boolean cercaConflitto(Voto voto) {
+	
+	/*public boolean cercaConflitto(Voto voto) {
 		boolean trovato=false;
 		for(Voto v: this.voti){
 			if(v.getCorso().compareTo(voto.getCorso())==0 && (v.getVoto()!=voto.getVoto()))
@@ -105,7 +134,14 @@ public class Libretto {
 			return true;
 		else
 			return false;
+	}*/
+	public boolean cercaConflitto(Voto voto) {
+		Voto esiste =this.cercaVoto(voto.getCorso());
+		if(esiste==null)
+			return false;
+		return (esiste.getVoto()!=voto.getVoto());
 	}
+	
 	public String LibrettoInOrdineAlfabetico(){
 		Collections.sort(this.voti,new comparatoreNomeCorso());
 		String s="";
@@ -148,6 +184,8 @@ public class Libretto {
 		}
 		return librettoMigliorato;
 	}
+
+	
 	
 	
 }
