@@ -32,16 +32,30 @@ public class TestLibretto {
 		Voto v3=new Voto("Economia",24,LocalDate.now());
 		Voto v4=new Voto("Economia",25, LocalDate.now());
 		System.out.println("Economia con 24 e' duplicato:"+lib.cercaVoto(v3)+" / conflitto: "+lib.cercaConflitto(v3) );
-		System.out.println("Economia con 25 e' duplicato:"+lib.cercaVoto(v4)+" / conflitto: "+lib.cercaConflitto(v4) );
+		System.out.println("Economia con 25 e' duplicato:"+lib.cercaVoto(v4)+" / conflitto: "+lib.cercaConflitto(v4)+"\n" );
 		
+		// 7. migliora libretto
+		Libretto migliorato=lib.creaLibrettoMigliorato();
+		System.out.println("Miglioramento del libretto");
+		System.out.println(this.lib);
+		System.out.println(migliorato);
 		
+		//8. Stampa in ordine alfabetico
 		
+		Libretto alfabetico=new Libretto(lib);
+		alfabetico.LibrettoInOrdineAlfabetico();
+		System.out.println(alfabetico);
 		
-		System.out.println(this.lib) ;
-		System.out.println(this.lib.LibrettoInOrdineAlfabetico());
-		System.out.println(this.lib.LibrettoInOrdineDiVotoDecrescente());
-		System.out.println(this.lib.librettoSenzaVoto(24));
-		System.out.println(this.lib.librettoMigliorato());
+		//8. stampa in ordine di voto
+		Libretto votiDecrescenti=new Libretto(lib);
+		votiDecrescenti.LibrettoInOrdineDiVotoDecrescente();
+		System.out.println(votiDecrescenti);
+		//9. elimina voti inferiori al 24
+		lib.add(new Voto("Chimica",19,LocalDate.now()));
+		lib.LibrettoInOrdineAlfabetico();
+		System.out.println(lib);
+		lib.librettoSenzaVoto(24);
+		System.out.println(lib);
 		
 		
 	}

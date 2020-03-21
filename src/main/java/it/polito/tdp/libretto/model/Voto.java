@@ -4,10 +4,11 @@ import java.time.LocalDate;
 
 /**
  * Classe Voto, contiene le informazioni su un esame
- * superato.
+ * superato. Voto implementa comparable in maniera tale che riesca a comparatsi con altri 
+ * oggetti di tipo voto
  *
  */
-public class Voto {
+public class Voto implements Comparable<Voto> {
 	
 	private String corso ; // "Tecniche di Programmazione"
 	private int voto ; // 28
@@ -80,9 +81,40 @@ public class Voto {
 			return false;
 		return true;
 	}
+	/**
+	 * Copy constructor di {@link Voto}: crea un nuovo {@link Voto} copiando il contenuto del parametro {@code v}. Sto copiando i riferimenti,
+	 * non è pericoloso per due motivi: 1. sia corso che data sono oggetti immutabile(Sono stringhe),
+	 *  mentre per voto che è un valore primitivo, viene sempre copiato il valore, e non se ne copia il riferimento
+	 * @param v il voto da copiare
+	 */
 	
-	
-	
+	public Voto (Voto v) {
+		this.corso=v.corso; // al posto di v.getCorso();-->sto accedendo ad un altro oggetto della STESSA TUA CLASSE. 
+		this.data=v.data;
+		this.voto=v.voto;
+	}
+	// metodo altermantivo 
+	/*public Voto (Voto v) {
+		this.corso=new String(v.corso);
+		this.data=v.data;
+		this.voto=v.voto;
+	}*/
+	/**
+	 * Crea una copia(clone) dell'oggetto esistente come nuovo oggetto. 
+	 */
+	public Voto clone() {
+		Voto v=new Voto(this.corso,this.voto, this.data);
+		return v;
+	}
+	/**
+	 * <0 se this < other (prima)
+	 * =0 se this = other
+	 * >0 se this > other (dopo)
+	 */
+	@Override
+	public int compareTo(Voto other) {
+		return this.corso.compareTo(other.corso);
+	}
 	
 
 }

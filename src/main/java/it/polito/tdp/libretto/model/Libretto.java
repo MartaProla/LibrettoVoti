@@ -10,16 +10,28 @@ import java.util.List;
  */
 public class Libretto {
 
-	private List<Voto> voti;
+	private List<Voto> voti=new ArrayList<>();;
 	
 	/**
 	 * Crea un libretto vuoto nuovo
 	 */
 
 	public Libretto() {
-		this.voti=new ArrayList<>();
+		super();
+		
 	}
-
+	/**
+	 * Copy constructor
+	 * "Shallow" copia superficiale, fa una copia dell'oggetto corrente, ho una specie di condivisione --> qua devo solo stamparli
+	 * 
+	 * ["Deep" copaia profonda vengono copiati anche i singoli voti] -->se devo modificarlo
+	 * @param lib
+	 */
+	public Libretto(Libretto lib ) {
+		super();
+		this.voti.addAll(lib.voti);// sto copiando il libretto
+		
+	}
 	/**
 	 * Aggiunge un nuovo voto al libretto
 	 * 
@@ -141,33 +153,7 @@ public class Libretto {
 			return false;
 		return (esiste.getVoto()!=voto.getVoto());
 	}
-	
-	public String LibrettoInOrdineAlfabetico(){
-		Collections.sort(this.voti,new comparatoreNomeCorso());
-		String s="";
-		for(Voto v:voti) {
-			s += v.toString() + "\n";
-		}
-		return s;
-	}
-	public String LibrettoInOrdineDiVotoDecrescente(){
-		Collections.sort(this.voti,new comparatoreVotoCorso());
-		String s="";
-		for(Voto v:voti) {
-			s += v.toString() + "\n";
-		}
-		return s;
-	}
-	public Libretto librettoSenzaVoto(int voto) {
-		Libretto librettoDepurato=new Libretto();
-		for(Voto v:voti) {
-			if(v.getVoto()>voto) {
-				librettoDepurato.add(v);
-			}
-		}
-		return librettoDepurato;
-	}
-	public Libretto librettoMigliorato() {
+	/*public Libretto librettoMigliorato() {
 		Libretto librettoMigliorato=new Libretto();
 		for(Voto v: voti) {
 			if(v.getVoto()>=18 && v.getVoto()<24) {
@@ -182,10 +168,90 @@ public class Libretto {
 				}
 			}
 		}
-		return librettoMigliorato;
+		return librettoMigliorato;*/
+	/**
+	 * Restituisce un nuovo libretto migliorando i voti del libretto attuale
+	 * @return
+	 */
+	
+	/*public Libretto creaLibrettoMigliorato() {
+		Libretto nuovo=new Libretto();
+		for(Voto v:this.voti) {
+			Voto v2=v;// ATTENZIONE qua sto usando i voti del libretto quello del libretto inziale. Mi da quindi un errore nella 
+						// scrittura, infatti mi vengano stampati tutti e libretti con i voti 30,30,26 mentre vorrei: libretto modificato 30,30,26
+						// e quello di partenza lo vorrei 30,28,26
+			if(v2.getVoto()>=24) {
+				v2.setVoto(v2.getVoto()+2);
+				if(v2.getVoto()>30)
+					v2.setVoto(30);
+			}else {
+				if(v2.getVoto()>=18) {
+					v2.setVoto(v2.getVoto()+1);
+				}
+			}
+			nuovo.add(v2);
+		}
+		return nuovo;
+	}*/
+	// Vediamo dunque come fare una copia del libretto. 
+	// Uso o copy custructor o metodo clone
+	
+	public Libretto creaLibrettoMigliorato() {
+		Libretto nuovo=new Libretto();
+		for(Voto v:this.voti) {
+			// il copi constructor lo farà direttamente voto. 
+			//Voto v2=new Voto(v); // Vot v2=new Voto( v.getCorso,v.getVoto, v.getData) -->potrei farlo, ma nel momento in cui a voto si aggiunge un parametro 
+								// risulterebbe complicato
+			Voto v2=v.clone();
+			if(v2.getVoto()>=24) {
+				v2.setVoto(v2.getVoto()+2);
+				if(v2.getVoto()>30)
+					v2.setVoto(30);
+			}else {
+				if(v2.getVoto()>=18) {
+					v2.setVoto(v2.getVoto()+1);
+				}
+			}
+			nuovo.add(v2);
+		}
+		return nuovo;
 	}
+	
+	/*public String LibrettoInOrdineAlfabetico(){
+		Collections.sort(this.voti,new comparatoreNomeCorso());
+		String s="";
+		for(Voto v:voti) {
+			s += v.toString() + "\n";
+		}
+		return s;
+	}*/
+	
+	public void  LibrettoInOrdineAlfabetico(){
+		Collections.sort(this.voti);
+	}
+	
+	
+	public void LibrettoInOrdineDiVotoDecrescente(){
+		Collections.sort(this.voti,new comparatoreVotoCorso());
+	}
+	
+	// elimina dal libretto tutti i voti <24
+	
+	public void librettoSenzaVoto(int voto) {
+		List<Voto>daRimuovere=new ArrayList<>();
+		for(Voto v:voti) {
+			if(v.getVoto()<voto)
+				daRimuovere.add(v);
+		}
+		/*for (Voto v: daRimuovere) {
+			this.voti.remove(v);
+		}*/
+		this.voti.removeAll(daRimuovere);
+	}
+	
+}
 
 	
 	
 	
-}
+
